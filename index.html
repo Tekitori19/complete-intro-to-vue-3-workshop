@@ -10,7 +10,15 @@
     <div id="app">
       <p v-if="characterList.length === 0">There are no characters</p>
       <ul v-else-if="characterList.length % 2 === 0">
-        <li v-for="character in characterList">{{ character.name }}</li>
+        <li v-for="character in characterList">
+          <p>
+            {{ character.name }}
+            <button @Click="addFavourite(character)">🌟</button>
+          </p>
+        </li>
+      </ul>
+      <ul>
+        <li v-for="character in favourite"> {{character}} </li>
       </ul>
       <p>
         <span v-for="(character, index) in characterList"
@@ -18,6 +26,14 @@
           }}
         </span>
       </p>
+      
+      <div>
+        <h2>New character</h2>
+        <p>{{newChar}}</p>
+        <input type="text" v-model="newChar.name" @keyup.enter="addToArray">
+        <button @click="addToArray" >Add character</button>
+      </div>
+
       <p v-else>There are odd characters!</p>
     </div>
 
@@ -25,6 +41,8 @@
     <script>
       Vue.createApp({
         data: () => ({
+          favourite: [],
+          newChar: {name:''},
           characterList: [
             {
               name: 'Aang'
@@ -39,8 +57,18 @@
               name: 'Katara'
             }
           ]
-        })
+        }),
+        methods: {
+          addToArray() {
+            this.characterList.push(this.newChar)
+            this.newChar = {name:''}
+          },
+          addFavourite(character){
+            this.favourite.push(character)
+          }
+        }
       }).mount('#app')
     </script>
   </body>
 </html>
+ 
